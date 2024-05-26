@@ -6,6 +6,33 @@
     <meta charset="UTF-8">
     <title>Palindrome Checker</title>
     <style>
+        /* basic styling to make the page look nice */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #4682b4;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Palindrome Checker</title>
+    <style>
         /* Basic styling to make the page look nice */
         body {
             font-family: Arial, sans-serif;
@@ -30,43 +57,75 @@
 <body>
     <!-- Main heading of the page -->
     <h1>Palindrome Checker</h1>
-    <!-- Input field for person to enter a word -->
+    <!-- Input field for your first name -->
+    <input type="text" id="firstName" placeholder="Your first name">
+    <!-- Input field for your last name -->
+    <input type="text" id="lastName" placeholder="Your last name">
+    <!-- Input field for a word or phrase -->
     <input type="text" id="inputField" placeholder="Enter a word or phrase">
-    <!-- Button to check if the input is a palindrome -->
+    <!-- Input field for your zip code -->
+    <input type="text" id="zipCode" placeholder="Your zip code">
+    <!-- Button to check if it's a palindrome -->
     <button id="checkButton">Check</button>
-    <!-- Div to display the result -->
+    <!-- Area to display the result -->
     <div id="result"></div>
 
     <script>
         // Function to check if a string is a palindrome
         function isPalindrome(str) {
-            // Remove non-alphanumeric characters and convert to lowercase
+            // Remove non-alphanumeric characters and make lowercase
             str = str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-            // Check if the string is equal to its reverse
+            // Check if it reads the same forwards and backwards
             return str === str.split('').reverse().join('');
         }
 
-        // Get elements from the HTML
+        // Get input elements from the HTML
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
         const inputField = document.getElementById('inputField');
+        const zipCodeInput = document.getElementById('zipCode');
         const checkButton = document.getElementById('checkButton');
         const resultDiv = document.getElementById('result');
 
-        // Event listener for the check button
+        // Listen for button click
         checkButton.addEventListener('click', () => {
-            // Get the value from the input field
+            // Get values from input fields
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
             const inputText = inputField.value.trim();
-            // Check if the input text is a palindrome
+            const zipCode = zipCodeInput.value.trim();
+
+            // Combine first and last name
+            const fullName = `${firstName} ${lastName}`;
+
+            // Check if full name is too long
+            if (fullName.length > 20) {
+                alert('Please use fewer characters.');
+                return; // Stop executing code
+            }
+
+            // Check if zip code is valid
+            if (!(/^\d{5}$/.test(zipCode))) {
+                alert('Please enter a valid zip code.');
+                return; // Stop executing code
+            }
+
+            // Check if the input is a palindrome
             const result = isPalindrome(inputText) 
                 ? `"${inputText}" is a palindrome!` 
                 : `"${inputText}" is not a palindrome.`;
+
             // Display the result
             resultDiv.textContent = result;
 
-            // Ask the user if they want to check another word
+            // Ask if they want to check another word
             if (confirm('Do you want to check another word?')) {
-                // Clear the input field and focus on it
+                // Clear input fields and focus on the first name
+                firstNameInput.value = '';
+                lastNameInput.value = '';
                 inputField.value = '';
-                inputField.focus();
+                zipCodeInput.value = '';
+                firstNameInput.focus();
             } else {
                 alert('Thanks!');
             }
