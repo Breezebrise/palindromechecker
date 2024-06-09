@@ -1,0 +1,142 @@
+<!-- 
+Nicole Welch
+Description: Palindrome Checker with Music
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Palindrome Checker</title>
+    <style>
+        /* Basic styling to make the page look nice */
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #ffd1dc;
+            text-align: center;
+            padding: 50px;
+            color: black;
+        }
+        h1 {
+            color: #4682b4;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        /* Creative element: button styling */
+        button {
+            background-color: #4682b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #315f8a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main heading of the page -->
+    <h1>Palindrome Checker</h1>
+    <!-- Input field for your first name -->
+    <input type="text" id="firstName" placeholder="Your first name">
+    <!-- Input field for your last name -->
+    <input type="text" id="lastName" placeholder="Your last name">
+    <!-- Input field for a word or phrase -->
+    <input type="text" id="inputField" placeholder="Enter a word or phrase">
+    <!-- Input field for your zip code -->
+    <input type="text" id="zipCode" placeholder="Your zip code">
+    <!-- Button to check if it's a palindrome -->
+    <button id="checkButton">Check</button>
+    <!-- Area to display the result -->
+    <div id="result"></div>
+    <!-- Button to start background music -->
+    <button id="musicButton">Start Background Music</button>
+    <!-- Background music element -->
+    <audio id="backgroundMusic" src="us-lab-background-1.mp3" loop></audio>
+
+    <script>
+        // Function to check if a string is a palindrome
+        function isPalindrome(str) {
+            // Remove non-alphanumeric characters and make lowercase
+            str = str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+            // Check if it reads the same forwards and backwards
+            return str === str.split('').reverse().join('');
+        }
+
+        // Get input elements from the HTML
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const inputField = document.getElementById('inputField');
+        const zipCodeInput = document.getElementById('zipCode');
+        const checkButton = document.getElementById('checkButton');
+        const resultDiv = document.getElementById('result');
+        const musicButton = document.getElementById('musicButton');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+
+        // Function to play background music
+        function playBackgroundMusic() {
+            backgroundMusic.play();
+            // Hide the music button once music is playing
+            musicButton.style.display = 'none';
+        }
+
+        // Event listener for the music button
+        musicButton.addEventListener('click', playBackgroundMusic);
+
+        // Listen for button click
+        checkButton.addEventListener('click', () => {
+            // Get values from input fields
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
+            const inputText = inputField.value.trim();
+            const zipCode = zipCodeInput.value.trim();
+
+            // Combine first and last name
+            const fullName = `${firstName} ${lastName}`;
+
+            // Check if full name is too long
+            if (fullName.length > 20) {
+                alert('Your name is too long! Please use fewer characters.');
+                return; // Stop executing code
+            }
+
+            // Check if zip code is valid
+            if (!(/^\d{5}$/.test(zipCode))) {
+                alert('Please enter a valid 5-digit zip code.');
+                return; // Stop executing code
+            }
+
+            // Check if the input is a palindrome
+            const result = isPalindrome(inputText) 
+                ? `"${inputText}" is a palindrome!` 
+                : `"${inputText}" is not a palindrome.`;
+
+            // Display the result
+            resultDiv.textContent = result;
+
+            // Ask if they want to check another word
+            if (confirm('Do you want to check another word?')) {
+                // Clear input fields and focus on the first name
+                firstNameInput.value = '';
+                lastNameInput.value = '';
+                inputField.value = '';
+                zipCodeInput.value = '';
+                firstNameInput.focus();
+            } else {
+                alert('Thanks for using the Palindrome Checker!');
+            }
+        });
+
+        // Set volume for background music
+        backgroundMusic.volume = 0.2; // Set the volume to 20%
+    </script>
+</body>
+</html>
